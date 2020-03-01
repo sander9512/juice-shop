@@ -168,7 +168,7 @@ app.use('/assets/i18n', verify.accessControlChallenges())
 app.use('/solve/challenges/server-side', verify.serverSideChallenges())
 
 /* /ftp directory browsing and file download */
-app.use('/ftp', serveIndex('ftp', { icons: true }))
+//app.use('/ftp', serveIndex('ftp', { icons: true }))
 app.use('/ftp/:file', fileServer())
 
 /* /encryptionkeys directory browsing */

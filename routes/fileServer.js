@@ -15,14 +15,24 @@ module.exports = function servePublicFiles () {
     }
   }
 
-  function verify (file, res, next) {
-    if (file && (endsWithWhitelistedFileType(file) || (file === 'incident-support.kdbx'))) {
+  // function verify (file, res, next) {
+  //   if (file && (endsWithWhitelistedFileType(file) || (file === 'incident-support.kdbx'))) {
+  //     file = insecurity.cutOffPoisonNullByte(file)
+  //     verifySuccessfulPoisonNullByteExploit(file)
+  //     res.sendFile(path.resolve(__dirname, '../ftp/', file))
+  //   } else {
+  //     res.status(403)
+  //     next(new Error('Only .md and .pdf files are allowed!'))
+  //   }
+  // }
+  function verify(file, res, next) {
+    if(file === 'legal.md') {
       file = insecurity.cutOffPoisonNullByte(file)
       verifySuccessfulPoisonNullByteExploit(file)
       res.sendFile(path.resolve(__dirname, '../ftp/', file))
     } else {
-      res.status(403)
-      next(new Error('Only .md and .pdf files are allowed!'))
+      res.status(403).send('You are not authorized to access these files')
+      next()
     }
   }
 
@@ -40,7 +50,7 @@ module.exports = function servePublicFiles () {
     }
   }
 
-  function endsWithWhitelistedFileType (param) {
-    return utils.endsWith(param, '.md') || utils.endsWith(param, '.pdf')
-  }
+  // function endsWithWhitelistedFileType (param) {
+  //   return utils.endsWith(param, '.md') || utils.endsWith(param, '.pdf')
+  // }
 }
