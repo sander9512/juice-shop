@@ -47,9 +47,11 @@ module.exports = function productReviews () {
       return
     }
     const t0 = new Date().getTime()
-     db.reviews.find({where : { id }}).then(reviews => {
+      console.log('id' + id)
+     db.reviews.find({ product : id }).then(reviews => {
       const t1 = new Date().getTime()
       console.log(t1 - t0, 'time')
+         console.log(reviews)
       if ((t1 - t0) > 2000) {
         console.log('nosql injection ')
       }

@@ -9,16 +9,21 @@ module.exports = function productReviews () {
     if (user && user.data.email !== req.body.author && utils.notSolved(challenges.forgedReviewChallenge)) {
       utils.solve(challenges.forgedReviewChallenge)
     }
-    db.reviews.insert({
-      product: req.params.id,
-      message: req.body.message,
-      author: req.body.author,
-      likesCount: 0,
-      likedBy: []
-    }).then(result => {
-      res.status(201).json({ staus: 'success' })
-    }, err => {
-      res.status(500).json(err)
-    })
+    if((user !== undefined) && (user.data.email === req.body.author)) {
+      db.reviews.insert({
+        product: req.params.id,
+        message: req.body.message,
+        author: user.data.email,
+        likesCount: 0,
+        likedBy: []
+      }).then(result => {
+        res.status(201).json({ staus: 'success' })
+      }, err => {
+        res.status(500).json(err)
+      })
+    }
+    else {
+      res.status(400).json({error: 'Bad request'})
+    }
   }
 }
