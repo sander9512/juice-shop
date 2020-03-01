@@ -63,6 +63,12 @@ module.exports = (sequelize, { STRING, BOOLEAN }) => {
       return Promise.reject(new Error('Nice try, but this is not how the "Ephemeral Accountant" challenge works!'))
     }
   })
-
+  User.addHook('afterCreate', (user) => {
+    User.addHook('beforeCreate', (user) => {
+      if (user.role !== 'customer') {
+        return Promise.reject(new Error('You can only register an account as a customer'))
+      }
+    })
+  })
   return User
 }
